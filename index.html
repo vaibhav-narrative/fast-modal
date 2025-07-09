@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delayed Modal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .trigger-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .trigger-btn:hover {
+            background-color: #45a049;
+        }
+
+        .trigger-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .countdown {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Delayed Modal Demo</h1>
+        <p>Click the button below and wait exactly 10 seconds for the modal to appear!</p>
+        
+        <button id="triggerBtn" class="trigger-btn">Click Me!</button>
+        <div id="countdown" class="countdown"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeBtn">&times;</span>
+            <h2>🎉 Modal Opened!</h2>
+            <p>Congratulations! You waited exactly 10 seconds and the modal has appeared.</p>
+            <p>This modal opened automatically after the 10-second delay.</p>
+        </div>
+    </div>
+
+    <script>
+        const triggerBtn = document.getElementById('triggerBtn');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.getElementById('closeBtn');
+        const countdown = document.getElementById('countdown');
+
+        let timeoutId = null;
+        let countdownInterval = null;
+
+        triggerBtn.addEventListener('click', function() {
+            // Disable the button to prevent multiple clicks
+            triggerBtn.disabled = true;
+            triggerBtn.textContent = 'Waiting...';
+            
+            let secondsLeft = 10;
+            countdown.textContent = `Modal will open in ${secondsLeft} seconds`;
+
+            // Update countdown every second
+            countdownInterval = setInterval(() => {
+                secondsLeft--;
+                if (secondsLeft > 0) {
+                    countdown.textContent = `Modal will open in ${secondsLeft} seconds`;
+                } else {
+                    countdown.textContent = 'Opening modal...';
+                }
+            }, 1000);
+
+            // Open modal after exactly 10 seconds
+            timeoutId = setTimeout(() => {
+                modal.style.display = 'block';
+                clearInterval(countdownInterval);
+                countdown.textContent = '';
+                
+                // Reset button
+                triggerBtn.disabled = false;
+                triggerBtn.textContent = 'Click Me Again!';
+            }, 10000); // 10 seconds = 10000 milliseconds
+        });
+
+        // Close modal when clicking the X
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Handle ESC key to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 
