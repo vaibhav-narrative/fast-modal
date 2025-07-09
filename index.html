@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slow Modal</title>
+    <title>Modal Demo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -106,11 +106,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Slow Modal Demo</h1>
-        <p>Click the button below to open a modal after exactly 10 seconds!</p>
+        <h1>Modal Demo</h1>
+        <p>Click the button below to open a modal!</p>
         
         <button id="triggerButton" class="trigger-button">
-            Open Modal (10 Second Delay)
+            Open Modal
         </button>
         
         <div id="countdown" class="countdown"></div>
@@ -121,7 +121,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>🎉 Modal Opened!</h2>
-            <p>This modal opened after exactly 10 seconds as requested!</p>
+            <p>Welcome to the modal demo!</p>
             <p>Click the × button or click outside to close.</p>
         </div>
     </div>
@@ -138,9 +138,9 @@
         triggerButton.addEventListener('click', function() {
             // Disable button and start countdown
             triggerButton.disabled = true;
-            triggerButton.textContent = 'Opening in 10 seconds...';
+            triggerButton.textContent = 'Opening...';
             
-            let secondsLeft = 10;
+            let secondsLeft = 3;
             countdown.textContent = `Modal will open in ${secondsLeft} seconds...`;
             
             // Countdown display
@@ -154,17 +154,17 @@
                 }
             }, 1000);
             
-            // Open modal after exactly 10 seconds
+            // Open modal after exactly 3 seconds
             timeoutId = setTimeout(() => {
                 modal.style.display = 'block';
                 resetButton();
                 countdown.textContent = '';
-            }, 10000);
+            }, 3000);
         });
 
         function resetButton() {
             triggerButton.disabled = false;
-            triggerButton.textContent = 'Open Modal (10 Second Delay)';
+            triggerButton.textContent = 'Open Modal';
             if (countdownInterval) {
                 clearInterval(countdownInterval);
                 countdownInterval = null;
